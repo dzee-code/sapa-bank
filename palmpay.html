@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PalmPay Redesign</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00a76a;
+            --primary-light: #e6f5ef;
+            --dark: #1a1a1a;
+            --gray: #6c757d;
+            --light-gray: #f8f9fa;
+            --white: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* App Container */
+        .app-container {
+            max-width: 430px;
+            margin: 0 auto;
+            background-color: var(--white);
+            min-height: 100vh;
+            position: relative;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--primary);
+            color: var(--white);
+            position: relative;
+            z-index: 10;
+            animation: slideDown 0.5s ease;
+        }
+
+        .header-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .header-icon {
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .header-icon:hover {
+            transform: scale(1.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 20px;
+            padding-bottom: 80px;
+            min-height: calc(100vh - 120px);
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Balance Card */
+        .balance-card {
+            background: linear-gradient(135deg, var(--primary), #008055);
+            color: var(--white);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            transform: translateY(0);
+            transition: var(--transition);
+            animation: cardFloat 4s ease-in-out infinite alternate;
+        }
+
+        .balance-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .balance-title {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .balance-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .balance-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .balance-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: var(--white);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .balance-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .action-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .action-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .action-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 8px;
+            color: var(--primary);
+            font-size: 1.2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .action-label {
+            font-size: 0.75rem;
+            text-align: center;
+            color: var(--gray);
+        }
+
+        /* Transactions */
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .see-all {
+            font-size: 0.8rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        .transactions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .transaction-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: var(--transition);
+            animation: fadeInRight 0.5s ease;
+            animation-fill-mode: both;
+        }
+
+        .transaction-item:hover {
+            transform: translateX(5px);
+        }
+
+        .transaction-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .transaction-details {
+            flex: 1;
+        }
+
+        .transaction-title {
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 3px;
+        }
+
+        .transaction-date {
+            font-size: 0.7rem;
+            color: var(--gray);
+        }
+
+        .transaction-amount {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Offers */
+        .offers-container {
+            margin: 25px 0;
+        }
+
+        .offers-slider {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            scroll-snap-type: x mandatory;
+        }
+
+        .offer-card {
+            min-width: 250px;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            border-radius: 15px;
+            padding: 15px;
+            color: var(--white);
+            scroll-snap-align: start;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            animation: fadeInLeft 0.5s ease;
+        }
+
+        .offer-card:nth-child(2) {
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+        }
+
+        .offer-card:nth-child(3) {
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+        }
+
+        .offer-card:hover {
+            transform: scale(1.02);
+        }
+
+        .offer-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .offer-desc {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .offer-btn {
+            background-color: rgba(255, 255, 255, 0.3);
+            border: none;
+            color: var(--white);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .offer-btn:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 430px;
+            margin: 0 auto;
+            background-color: var(--white);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.7rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-icon {
+            font-size: 1.3rem;
+            margin-bottom: 3px;
+            transition: var(--transition);
+        }
+
+        .nav-item.active .nav-icon {
+            transform: translateY(-5px);
+        }
+
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            width: 6px;
+            height: 6px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .nav-item.active::after {
+            opacity: 1;
+            bottom: -5px;
+        }
+
+        /* FAB */
+        .fab {
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--white);
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 167, 106, 0.3);
+            cursor: pointer;
+            z-index: 50;
+            transition: var(--transition);
+            animation: pulse 2s infinite;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 167, 106, 0.4);
+        }
+
+        /* Other Pages (hidden by default) */
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Payments Page */
+        .payments-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .payment-method {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--white);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .payment-method:hover {
+            transform: translateY(-3px);
+        }
+
+        .payment-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-light);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .payment-details {
+            flex: 1;
+        }
+
+        .payment-title {
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+
+        .payment-desc {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        /* Cards Page */
+        .card {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, #3a3a3a, #1a1a1a);
+            border-radius: 15px;
+            padding: 20px;
+            color: var(--white);
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            animation: cardFloat 6s ease-in-out infinite alternate;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            transform: rotate(30deg);
+        }
+
+        .card-type {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .card-number {
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            font-size: 1rem;
+            word-spacing: 8px;
+        }
+
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .card-name {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .card-expiry {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .add-card {
+            background-color: var(--primary-light);
+            border: 2px dashed var(--primary);
+            color: var(--primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 180px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .add-card:hover {
+            background-color: rgba(0, 167, 106, 0.1);
+        }
+
+        .add-card i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        /* Finance Page */
+        .finance-card {
+            background-color: var(--white);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .finance-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .finance-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .finance-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-light);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .finance-title {
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .finance-amount {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .finance-progress {
+            height: 6px;
+            background-color: var(--primary-light);
+            border-radius: 3px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .finance-progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: 3px;
+            width: 65%;
+            transition: width 1s ease;
+        }
+
+        .finance-desc {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        /* Profile Page */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 20px;
+            color: var(--primary);
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .profile-phone {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+
+        .profile-verified {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .profile-verified i {
+            font-size: 0.6rem;
+            margin-left: 3px;
+        }
+
+        .profile-menu {
+            margin-top: 30px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .menu-item:hover {
+            transform: translateX(5px);
+        }
+
+        .menu-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-light);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .menu-title {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .menu-arrow {
+            color: var(--gray);
+        }
+
+        /* QR Scanner Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .qr-scanner {
+            width: 250px;
+            height: 250px;
+            border: 2px solid var(--white);
+            position: relative;
+            margin-bottom: 20px;
+            animation: scanLine 2s linear infinite;
+        }
+
+        .qr-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-text {
+            color: var(--white);
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from { 
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from { 
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from { 
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from { 
+                transform: translateY(-100%);
+            }
+            to { 
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes cardFloat {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 167, 106, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 167, 106, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 167, 106, 0); }
+        }
+
+        @keyframes scanLine {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+
+        /* Delay animations for transaction items */
+        .transaction-item:nth-child(1) { animation-delay: 0.1s; }
+        .transaction-item:nth-child(2) { animation-delay: 0.2s; }
+        .transaction-item:nth-child(3) { animation-delay: 0.3s; }
+        .transaction-item:nth-child(4) { animation-delay: 0.4s; }
+
+        /* Responsive */
+        @media (max-width: 375px) {
+            .quick-actions {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+            }
+            
+            .action-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+            
+            .balance-card {
+                padding: 15px;
+            }
+            
+            .balance-amount {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-title">PalmPay</div>
+            <div class="header-actions">
+                <i class="fas fa-bell header-icon"></i>
+                <i class="fas fa-search header-icon"></i>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Home Page -->
+            <div class="page home active">
+                <!-- Balance Card -->
+                <div class="balance-card">
+                    <div class="balance-title">Available Balance</div>
+                    <div class="balance-amount">
+                        ₦24,850.50
+                        <i class="fas fa-eye-slash" style="margin-left: 10px; font-size: 1rem;"></i>
+                    </div>
+                    <div class="balance-actions">
+                        <button class="balance-btn">
+                            <i class="fas fa-plus"></i> Add Money
+                        </button>
+                        <button class="balance-btn">
+                            <i class="fas fa-exchange-alt"></i> Transfer
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <div class="action-item">
+                        <div class="action-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="action-label">Send Money</div>
+                    </div>
+                    <div class="action-item">
+                        <div class="action-icon">
+                            <i class="fas fa-qrcode"></i>
+                        </div>
+                        <div class="action-label">Scan QR</div>
+                    </div>
+                    <div class="action-item">
+                        <div class="action-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="action-label">Airtime</div>
+                    </div>
+                    <div class="action-item">
+                        <div class="action-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <div class="action-label">Bills</div>
+                    </div>
+                </div>
+
+                <!-- Offers -->
+                <div class="offers-container">
+                    <div class="section-title">
+                        Special Offers
+                        <span class="see-all">See all</span>
+                    </div>
+                    <div class="offers-slider">
+                        <div class="offer-card">
+                            <div class="offer-title">10% Cashback</div>
+                            <div class="offer-desc">Get 10% back on all bill payments this week</div>
+                            <button class="offer-btn">Claim Now</button>
+                        </div>
+                        <div class="offer-card">
+                            <div class="offer-title">Free Transfer</div>
+                            <div class="offer-desc">3 free transfers to any bank this month</div>
+                            <button class="offer-btn">Learn More</button>
+                        </div>
+                        <div class="offer-card">
+                            <div class="offer-title">Double Points</div>
+                            <div class="offer-desc">Earn 2x PalmPoints on all transactions</div>
+                            <button class="offer-btn">Activate</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Transactions -->
+                <div class="transactions-container">
+                    <div class="section-title">
+                        Recent Transactions
+                        <span class="see-all">See all</span>
+                    </div>
+                    <div class="transactions-list">
+                        <div class="transaction-item">
+                            <div class="transaction-icon">
+                                <i class="fas fa-shopping-bag"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <div class="transaction-title">Supermarket Purchase</div>
+                                <div class="transaction-date">Today, 10:45 AM</div>
+                            </div>
+                            <div class="transaction-amount">-₦8,500</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <div class="transaction-title">Money Received</div>
+                                <div class="transaction-date">Yesterday, 2:30 PM</div>
+                            </div>
+                            <div class="transaction-amount" style="color: var(--primary);">+₦15,000</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <div class="transaction-title">Electricity Bill</div>
+                                <div class="transaction-date">Yesterday, 9:15 AM</div>
+                            </div>
+                            <div class="transaction-amount">-₦5,200</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <div class="transaction-title">Airtime Purchase</div>
+                                <div class="transaction-date">Jul 12, 4:00 PM</div>
+                            </div>
+                            <div class="transaction-amount">-₦1,000</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payments Page -->
+            <div class="page payments">
+                <div class="payments-header">
+                    <div class="section-title">Payments</div>
+                </div>
+                
+                <div class="payment-method">
+                    <div class="payment-icon">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <div class="payment-details">
+                        <div class="payment-title">Scan QR Code</div>
+                        <div class="payment-desc">Pay by scanning a merchant's QR code</div>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                
+                <div class="payment-method">
+                    <div class="payment-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="payment-details">
+                        <div class="payment-title">Send Money</div>
+                        <div class="payment-desc">Transfer to bank or PalmPay users</div>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                
+                <div class="payment-method">
+                    <div class="payment-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="payment-details">
+                        <div class="payment-title">Buy Airtime</div>
+                        <div class="payment-desc">Top up your phone or others</div>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                
+                <div class="payment-method">
+                    <div class="payment-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="payment-details">
+                        <div class="payment-title">Pay Bills</div>
+                        <div class="payment-desc">Electricity, TV, Internet and more</div>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+
+            <!-- Cards Page -->
+            <div class="page cards">
+                <div class="section-title">My Cards</div>
+                
+                <div class="card">
+                    <div class="card-type">PalmPay Virtual Card</div>
+                    <div class="card-number">•••• •••• •••• 4567</div>
+                    <div class="card-details">
+                        <div class="card-name">John Doe</div>
+                        <div class="card-expiry">08/25</div>
+                    </div>
+                </div>
+                
+                <div class="add-card">
+                    <i class="fas fa-plus"></i>
+                    <div>Add New Card</div>
+                </div>
+                
+                <div class="section-title" style="margin-top: 30px;">Card Settings</div>
+                
+                <div class="payment-method">
+                    <div class="payment-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="payment-details">
+                        <div class="payment-title">Freeze Card</div>
+                        <div class="payment-desc">Temporarily block your card</div>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                
+                <div class="payment-method">
+                    <div class="payment-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="payment-details">
+                        <div class="payment-title">Security Settings</div>
+                        <div class="payment-desc">Manage PIN and limits</div>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+
+            <!-- Finance Page -->
+            <div class="page finance">
+                <div class="section-title">Finance</div>
+                
+                <div class="finance-card">
+                    <div class="finance-header">
+                        <div class="finance-icon">
+                            <i class="fas fa-piggy-bank"></i>
+                        </div>
+                        <div class="finance-title">Savings</div>
+                        <div class="finance-amount">₦150,000</div>
+                    </div>
+                    <div class="finance-progress">
+                        <div class="finance-progress-bar"></div>
+                    </div>
+                    <div class="finance-desc">You've saved 65% of your ₦230,000 goal</div>
+                </div>
+                
+                <div class="finance-card">
+                    <div class="finance-header">
+                        <div class="finance-icon">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                        <div class="finance-title">Loans</div>
+                        <div class="finance-amount">₦0</div>
+                    </div>
+                    <div class="finance-desc">You're eligible for a loan up to ₦500,000</div>
+                </div>
+                
+                <div class="finance-card">
+                    <div class="finance-header">
+                        <div class="finance-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="finance-title">Investments</div>
+                        <div class="finance-amount">₦0</div>
+                    </div>
+                    <div class="finance-desc">Start investing with as little as ₦5,000</div>
+                </div>
+                
+                <div class="finance-card">
+                    <div class="finance-header">
+                        <div class="finance-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="finance-title">PalmPoints</div>
+                        <div class="finance-amount">1,250 pts</div>
+                    </div>
+                    <div class="finance-desc">Redeem for airtime, cashback and more</div>
+                </div>
+            </div>
+
+            <!-- Profile Page -->
+            <div class="page profile">
+                <div class="profile-header">
+                    <div class="profile-avatar">JD</div>
+                    <div class="profile-info">
+                        <div class="profile-name">John Doe</div>
+                        <div class="profile-phone">+234 812 345 6789</div>
+                        <div class="profile-verified">
+                            Verified <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="profile-menu">
+                    <div class="menu-item">
+                        <div class="menu-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="menu-title">Security</div>
+                        <i class="fas fa-chevron-right menu-arrow"></i>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="menu-title">Notifications</div>
+                        <i class="fas fa-chevron-right menu-arrow"></i>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <div class="menu-title">Help & Support</div>
+                        <i class="fas fa-chevron-right menu-arrow"></i>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-icon">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <div class="menu-title">Settings</div>
+                        <i class="fas fa-chevron-right menu-arrow"></i>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </div>
+                        <div class="menu-title">Log Out</div>
+                        <i class="fas fa-chevron-right menu-arrow"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-item active" data-page="home">
+                <i class="fas fa-home nav-icon"></i>
+                <div>Home</div>
+            </div>
+            <div class="nav-item" data-page="payments">
+                <i class="fas fa-money-bill-wave nav-icon"></i>
+                <div>Pay</div>
+            </div>
+            <div class="nav-item" data-page="cards">
+                <i class="fas fa-credit-card nav-icon"></i>
+                <div>Cards</div>
+            </div>
+            <div class="nav-item" data-page="finance">
+                <i class="fas fa-wallet nav-icon"></i>
+                <div>Finance</div>
+            </div>
+            <div class="nav-item" data-page="profile">
+                <i class="fas fa-user nav-icon"></i>
+                <div>Profile</div>
+            </div>
+        </div>
+
+        <!-- FAB -->
+        <div class="fab" id="qrScannerBtn">
+            <i class="fas fa-qrcode"></i>
+        </div>
+
+        <!-- QR Scanner Modal -->
+        <div class="modal" id="qrScannerModal">
+            <i class="fas fa-times modal-close" id="closeModal"></i>
+            <div class="qr-scanner">
+                <div class="qr-line"></div>
+            </div>
+            <div class="modal-text">Scan QR Code to Pay</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Navigation
+            const navItems = document.querySelectorAll('.nav-item');
+            const pages = document.querySelectorAll('.page');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Remove active class from all nav items and pages
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    pages.forEach(page => page.classList.remove('active'));
+                    
+                    // Add active class to clicked nav item
+                    this.classList.add('active');
+                    
+                    // Show corresponding page
+                    const pageName = this.getAttribute('data-page');
+                    document.querySelector(`.page.${pageName}`).classList.add('active');
+                });
+            });
+            
+            // QR Scanner
+            const qrScannerBtn = document.getElementById('qrScannerBtn');
+            const qrScannerModal = document.getElementById('qrScannerModal');
+            const closeModal = document.getElementById('closeModal');
+            
+            qrScannerBtn.addEventListener('click', function() {
+                qrScannerModal.classList.add('active');
+            });
+            
+            closeModal.addEventListener('click', function() {
+                qrScannerModal.classList.remove('active');
+            });
+            
+            // Click outside modal to close
+            qrScannerModal.addEventListener('click', function(e) {
+                if (e.target === qrScannerModal) {
+                    qrScannerModal.classList.remove('active');
+                }
+            });
+            
+            // Animate progress bar when finance page is shown
+            document.querySelector('.nav-item[data-page="finance"]').addEventListener('click', function() {
+                setTimeout(() => {
+                    document.querySelector('.finance-progress-bar').style.width = '65%';
+                }, 300);
+            });
+            
+            // Random animation delays for action items
+            const actionItems = document.querySelectorAll('.action-item');
+            actionItems.forEach((item, index) => {
+                item.style.animationDelay = `${index * 0.1}s`;
+            });
+            
+            // Balance card floating animation
+            const balanceCard = document.querySelector('.balance-card');
+            setInterval(() => {
+                balanceCard.style.animation = 'none';
+                setTimeout(() => {
+                    balanceCard.style.animation = 'cardFloat 4s ease-in-out infinite alternate';
+                }, 10);
+            }, 4000);
+            
+            // Simulate scanning animation
+            const qrLine = document.querySelector('.qr-line');
+            setInterval(() => {
+                qrLine.style.top = '0';
+                setTimeout(() => {
+                    qrLine.style.transition = 'top 2s linear';
+                    qrLine.style.top = '100%';
+                }, 10);
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
